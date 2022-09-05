@@ -98,6 +98,7 @@ check_screenshot_1 = False
 check_run = False
 check_finish = False
 check_fraps = False
+check_run_2 = False
 
 # Подсчет количества поворотов до 5, 194 строка подсчета
 check_rotate = 0
@@ -114,6 +115,7 @@ except:
     check_run = True
     check_finish = True
     check_fraps = True
+    check_run_2 = True
     sys.exit(1)
 fps = 'FRAPS fps'
 
@@ -181,16 +183,14 @@ while True:
         if not check_run:
             print('Я иду вперед')
             pag.keyDown('w')
-            sleep(0.5)
             # Обработка метки
             check_run = True
         
         # Поворот налево при неизменении изображения
-        
         char_rotate = cv2.matchTemplate(frames[0][100:450, 320:1024-320], 
                                         frames[len(frames) - 1][100:450, 320:1024-320], 
                                         cv2.TM_CCOEFF_NORMED)[0][0]
-        if char_rotate > 0.95:
+        if char_rotate > 0.93:
             # Подсчет количества поворотов и выход при достижении 5 поворотов
             check_rotate += 1
             print('Поворот № ' + str(check_rotate))
@@ -199,11 +199,17 @@ while True:
                 # Обработка меток
                 print('Я устал идти вперед')
                 pag.keyUp('w')
-                sleep(0.2)
                 # Обработка меток
                 check_in_lobby = False
                 check_finish = True
-    
+        # Повторная обработка движения вперед
+        else:
+            if check_run:
+                if not check_run_2:
+                    pag.keyDown('w')
+                    # Обработка метки
+                    check_run_2 = True
+
     # Завершение игровой сессии
     if check_finish:
         # Окончание записи ФПС
