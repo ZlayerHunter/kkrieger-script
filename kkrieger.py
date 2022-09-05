@@ -10,7 +10,7 @@ import os
 text = '''
 Для работы программы:
     1) Запуск скрипта должен быть произведен от имени администратора.
-    2) Fraps должен быть установлен в папку по умолчанию C:/Fraps/fraps.exe или измените 112 строку.
+    2) Fraps должен быть установлен в папку по умолчанию C:/Fraps/fraps.exe или измените 108 строку.
     3) Необходимо указать существующие папки.
 Необходимо указать путь до корневого каталога или до исполняемого файла игры "pno0001.exe".
         Примеры:
@@ -99,7 +99,7 @@ check_run = False
 check_finish = False
 check_fraps = False
 
-# Подсчет количества поворотов до 5, 196 строка подсчета
+# Подсчет количества поворотов до 5, 194 строка подсчета
 check_rotate = 0
 
 # Запуск программы записи FPS и пропуск программы при неудачи
@@ -155,7 +155,7 @@ while True:
         # Инициализация загрузки игры
         if cv2.matchTemplate(img, blackscreen, cv2.TM_SQDIFF)[0][0] > 3025915400.0:
             # Прерывание начального лого для перехода в главное меню
-            print('Script pressed enter 2 times')
+            print('Нажием кнопку Enter 2 раза')
             pag.keyDown('enter')
             pag.keyUp('enter')
             # Вход в игровую сессию
@@ -168,14 +168,12 @@ while True:
     # Вход в игровую сессию и 
     if check_start_lobby:
         if not check_screenshot_1:
-            sleep(0.3)
             # Cнятие начального скриншота
             print('Сохранение первого скриншота:' + path_output_files + '\\screenshot_1.jpg')
             cv2.imwrite(path_output_files + '\\screenshot_1.jpg', np.array(window_capture()))
             # Начало записи FPS
             pag.keyDown('f11')
             pag.keyUp('f11')
-            sleep(0.3)
             # Обработка метки
             check_screenshot_1 = True
 
@@ -183,11 +181,12 @@ while True:
         if not check_run:
             print('Я иду вперед')
             pag.keyDown('w')
-            sleep(0.2)
+            sleep(0.5)
             # Обработка метки
             check_run = True
         
         # Поворот налево при неизменении изображения
+        
         char_rotate = cv2.matchTemplate(frames[0][100:450, 320:1024-320], 
                                         frames[len(frames) - 1][100:450, 320:1024-320], 
                                         cv2.TM_CCOEFF_NORMED)[0][0]
@@ -200,6 +199,7 @@ while True:
                 # Обработка меток
                 print('Я устал идти вперед')
                 pag.keyUp('w')
+                sleep(0.2)
                 # Обработка меток
                 check_in_lobby = False
                 check_finish = True
@@ -248,7 +248,7 @@ while True:
 print('Сохранение среднего FPS в файле:' + path_output_files + '\\output.txt')
 with open('C:\\Fraps\\FRAPSLOG.TXT', 'r') as file:
     text_tmp = file.readlines()[-2].split()[7]
-    with open(path_output_files + '\\output.txt', 'a+', encoding="utf-8") as file_output:
+    with open(path_output_files + '\\output.txt', 'a+', encoding="cp1251") as file_output:
         file_output.write('Количество среднего FPS: ' + text_tmp + '\n')
 
 # Завершить вызванные процессы повторно (на всякий случай), если что-то пошло не так.
