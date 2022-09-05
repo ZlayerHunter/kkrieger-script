@@ -1,4 +1,4 @@
 opencv-python
 PyAutoGUI
 numpy
-pywin
+pywin32
